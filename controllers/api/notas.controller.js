@@ -1,38 +1,20 @@
 ﻿var config = require('config.json');
 var express = require('express');
 var router = express.Router();
-var userService = require('services/user.service');
-var notaService = require('services/notas.service'); //teste, remover
+var notaService = require('services/notas.service');
 
 // routes
-router.post('/authenticate', authenticateUser);
-router.post('/register', registerUser);
-router.get('/current', getCurrentUser);
-router.put('/:_id', updateUser);
-router.delete('/:_id', deleteUser);
+router.post('/novaNota', criaNota);
 
 
 module.exports = router;
 
-function authenticateUser(req, res) {
-    notaService.create();
-    userService.authenticate(req.body.username, req.body.password)
-        .then(function (token) {
-            if (token) {
-                // authentication successful
-                res.send({ token: token });
-            } else {
-                // authentication failed
-                res.status(401).send('Username or password is incorrect');
-            }
-        })
-        .catch(function (err) {
-            res.status(400).send(err);
-        });
+function criaNota() {
+    notaService.create()
+
 }
 
 function registerUser(req, res) {
-    
     userService.create(req.body)
         .then(function () {
             res.sendStatus(200);
